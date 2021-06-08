@@ -10,7 +10,7 @@ steps:
     title: Cloning cf auto repository...
     type: git-clone
     stage: checkout
-    repo: ${{CFAUTO_REPO_OWNER}}/${{CFAUTO_REPO_NAME}}
+    repo: ${{CF_REPO_OWNER}}/cf_automation
     revision: master
     git: github
     
@@ -25,7 +25,7 @@ steps:
   prepare_environment_variabels:
     stage: prepare
     title: 'Prepare environment variables'
-    image: ${{CFAUTO_REPO_OWNER}}/${{CFAUTO_REPO_NAME}}
+    image: ${{CF_REPO_OWNER}}/cf_automation
     commands:
     - export PACKAGE_VERSION=$(if [  -f VERSION ]; then cat VERSION; else yq -r ".version" properties.yaml; fi;)
     - echo "CURRENT_VERSION=$PACKAGE_VERSION"
