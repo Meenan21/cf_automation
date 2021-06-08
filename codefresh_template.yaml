@@ -1,7 +1,6 @@
 version: '1.0'
 stages:
 - checkout
-- sourcecheckout
 - prepare
 - build
 - push
@@ -17,7 +16,7 @@ steps:
   source_clone:
     title: Cloning app source repository...
     type: git-clone
-    stage: sourcecheckout
+    stage: checkout
     repo: ${{CF_REPO_OWNER}}/${{CF_REPO_NAME}}
     revision: ${{CF_BRANCH}}
     git: github
@@ -45,6 +44,10 @@ steps:
     build_arguments:
     - CF_REVISION=${{CF_REVISION}}
     - CF_BRANCH=${{CF_BRANCH}}
+    - user=*****@sample.com
+    environment:
+      - PORT=4444
+      - TEST=test
     retry:
       maxAttempts: 3
       delay: 5
