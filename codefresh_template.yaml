@@ -36,7 +36,6 @@ steps:
     build_arguments:
     - CF_REVISION=${{CF_REVISION}}
     - CF_BRANCH=${{CF_BRANCH}}
-    - ROLLBAR_TOKEN=${{ROLLBAR_TOKEN}}
     retry:
       maxAttempts: 3
       delay: 5
