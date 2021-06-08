@@ -10,7 +10,7 @@ steps:
     type: git-clone
     stage: checkout
     repo: ${{CF_REPO_OWNER}}/cf_automation
-    revision: master
+    revision: main
     git: github
     
   source_clone:
