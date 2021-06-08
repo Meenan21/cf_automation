@@ -1,6 +1,7 @@
 version: '1.0'
 stages:
 - checkout
+- prepare
 - build
 - push
 steps:
@@ -11,7 +12,6 @@ steps:
     repo: ${{CF_REPO_OWNER}}/${{CF_REPO_NAME}}
     revision: ${{CF_BRANCH}}
     git: github
-    
     
   prepare_environment_variabels:
     stage: prepare
