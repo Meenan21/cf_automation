@@ -12,7 +12,7 @@ steps:
     revision: 'master'
     git: github
   build_my_app:
-    title: Building Node.Js Docker Image
+    title: Building Docker Image
     type: build
     stage: build
     image_name: my-cfapp-image
