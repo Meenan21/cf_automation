@@ -1,0 +1,69 @@
+version: '1.0'
+stages:
+- checkout
+- build
+- push
+steps:
+  main_clone:
+    title: Cloning cf auto repository...
+    type: git-clone
+    stage: checkout
+    repo: Meenan21/${{CF_REPO_NAME}}
+    revision: ${{CF_BRANCH}}
+    git: github
+    
+    
+  prepare_environment_variabels:
+    stage: prepare
+    title: 'Prepare environment variables'
+    image: Meenan21/${{CF_REPO_NAME}}
+    commands:
+    - export CURRENT_VERSION=$(yq -r ".version" version.yaml)
+    - echo "CURRENT_VERSION=$CURRENT_VERSION"
+    when:
+      steps:
+      - name: main_clone
+        on:
+        - success    
+    
+  build:
+    stage: build
+    title: "Building production image"
+    type: build
+    tag: ${{CF_BRANCH_TAG_NORMALIZED}}
+    dockerfile: Dockerfile
+    image_name: Meenan21/${{CF_REPO_NAME}}
+    build_arguments:
+    - CF_REVISION=${{CF_REVISION}}
+    - CF_BRANCH=${{CF_BRANCH}}
+    - ROLLBAR_TOKEN=${{ROLLBAR_TOKEN}}
+    retry:
+      maxAttempts: 3
+      delay: 5
+    metadata:
+      set:
+      - TICKET_CANDIDATE: ${{CF_BRANCH}}
+    when:
+      steps:
+      - name: main_clone
+        on:
+        - success    
+    
+  push_to_my_registry:
+    stage: push
+    title: 'Pushing image to registry'
+    type: push
+    image_name: meenan21/${{CF_REPO_NAME}}
+    registry: dockerhub
+    candidate: ${{build}}
+    tags:
+    - ${{CF_BRANCH_TAG_NORMALIZED}}
+    - ${{CF_REVISION}}
+    when:
+      steps:
+      - name: build
+        on:
+        - success
+      - name: prepare_environment_variabels
+        on:
+        - success
