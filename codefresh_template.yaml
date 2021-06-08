@@ -27,8 +27,8 @@ steps:
     title: 'Prepare environment variables'
     image: ${{CF_REPO_OWNER}}/cf_automation
     commands:
-    - export PACKAGE_VERSION=$(if [  -f VERSION ]; then cat VERSION; else yq -r ".version" properties.yaml; fi;)
-    - echo "CURRENT_VERSION=$PACKAGE_VERSION"
+    - export APP_VERSION=$(if [  -f VERSION ]; then cat VERSION; else yq -r ".version" properties.yaml; fi;)
+    - echo "CURRENT_VERSION=$APP_VERSION"
     when:
       steps:
       - name: main_clone
