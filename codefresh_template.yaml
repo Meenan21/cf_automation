@@ -25,7 +25,7 @@ steps:
   prepare_environment_variabels:
     stage: prepare
     title: 'Prepare environment variables'
-    image: ${{CF_REPO_OWNER}}/${{CF_REPO_NAME}}
+    image: ${{CFAUTO_REPO_OWNER}}/${{CFAUTO_REPO_NAME}}
     commands:
     - export PACKAGE_VERSION=$(if [  -f VERSION ]; then cat VERSION; else yq -r ".version" properties.yaml; fi;)
     - echo "CURRENT_VERSION=$PACKAGE_VERSION"
@@ -55,7 +55,10 @@ steps:
       steps:
       - name: main_clone
         on:
-        - success    
+        - success
+      - name: source_clone
+        on:
+        - success  
     
   push_to_my_registry:
     stage: push
