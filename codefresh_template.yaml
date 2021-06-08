@@ -1,6 +1,7 @@
 version: '1.0'
 stages:
 - checkout
+- sourcecheckout
 - prepare
 - build
 - push
@@ -9,6 +10,14 @@ steps:
     title: Cloning cf auto repository...
     type: git-clone
     stage: checkout
+    repo: ${{CFAUTO_REPO_OWNER}}/${{CFAUTO_REPO_NAME}}
+    revision: master
+    git: github
+    
+  source_clone:
+    title: Cloning app source repository...
+    type: git-clone
+    stage: sourcecheckout
     repo: ${{CF_REPO_OWNER}}/${{CF_REPO_NAME}}
     revision: ${{CF_BRANCH}}
     git: github
@@ -24,7 +33,7 @@ steps:
       steps:
       - name: main_clone
         on:
-        - success    
+        - success   
     
   build:
     stage: build
