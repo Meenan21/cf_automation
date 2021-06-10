@@ -8,7 +8,7 @@ jobs:
         uses: actions/checkout@master
 
       - name: 'run pipeline'
-        uses:./
+        uses: codefresh-io/codefresh-pipeline-runner@v5
         env:
           PIPELINE_NAME: 'codefresh-auto-pipeline'
           TRIGGER_NAME: 'codefresh-auto-trigger'
