@@ -12,7 +12,7 @@ jobs:
         with:
           args: '-v key1=value1 -v key2=value2'
         env:
-          PIPELINE_NAME: 'codefresh-pipeline'
-          TRIGGER_NAME: 'codefresh-trigger'
+          PIPELINE_NAME: 'codefresh-auto-pipeline'
+          TRIGGER_NAME: 'codefresh-auto-trigger'
           CF_API_KEY: ${{ secrets.CF_API_KEY }}
         id: run-pipeline
