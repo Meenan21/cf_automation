@@ -1,7 +1,6 @@
 version: '1.0'
 stages:
 - checkout
-- prepare
 - build
 - push
 steps:
@@ -21,26 +20,13 @@ steps:
     revision: ${{CF_BRANCH}}
     git: github
     
-  prepare_environment_variabels:
-    stage: prepare
-    title: 'Prepare environment variables'
-    image: ${{CF_REPO_OWNER}}/cf_automation
-    commands:
-    - export APP_VERSION=$(if [  -f VERSION ]; then cat VERSION; else yq -r ".version" properties.yaml; fi;)
-    - echo "CURRENT_VERSION=$APP_VERSION"
-    when:
-      steps:
-      - name: main_clone
-        on:
-        - success   
-    
   build:
     stage: build
     title: "Building production image"
     type: build
     tag: ${{CF_BRANCH_TAG_NORMALIZED}}
     dockerfile: Dockerfile
-    image_name: ${{IMAGE_NAME}}
+    image_name: ${{CF_REPO_OWNER}}/${{CF_REPO_NAME}}
     build_arguments:
     - CF_REVISION=${{CF_REVISION}}
     - CF_BRANCH=${{CF_BRANCH}}
@@ -51,9 +37,6 @@ steps:
     retry:
       maxAttempts: 3
       delay: 5
-    metadata:
-      set:
-      - TICKET_CANDIDATE: ${{CF_BRANCH}}
     when:
       steps:
       - name: main_clone
@@ -70,14 +53,9 @@ steps:
     image_name: ${{CF_REPO_OWNER}}/${{CF_REPO_NAME}}
     registry: dockerhub
     candidate: ${{build}}
-    tags:
-    - ${{CF_BRANCH_TAG_NORMALIZED}}
-    - ${{CF_REVISION}}
+    tag: latest
     when:
       steps:
       - name: build
-        on:
-        - success
-      - name: prepare_environment_variabels
         on:
         - success
