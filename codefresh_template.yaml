@@ -32,10 +32,10 @@ steps:
     build_arguments:
     - CF_REVISION=${{CF_REVISION}}
     - CF_BRANCH=${{CF_BRANCH}}
-    - user=*****@sample.com
-    environment:
-      - PORT=4444
-      - TEST=test
+    #- user=*****@sample.com
+    #environment:
+      #- PORT=4444
+      #- TEST=test
     retry:
       maxAttempts: 3
       delay: 5
