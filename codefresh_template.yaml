@@ -2,6 +2,7 @@ version: '1.0'
 stages:
 - checkout
 - build
+- approval
 - push
 steps:
   main_clone:
@@ -45,7 +46,15 @@ steps:
         - success
       - name: source_clone
         on:
-        - success  
+        - success 
+        
+  waitForInputBeforePushImage:
+    stage: approval
+    type: pending-approval
+    title: Image push to Registry?
+    timeout:
+      duration: 2
+      finalState: denied      
     
   push_to_my_registry:
     stage: push
@@ -58,5 +67,9 @@ steps:
     when:
       steps:
       - name: build
+        on:
+        - success
+      steps:
+      - name: waitForInputBeforePushImage
         on:
         - success
