@@ -53,7 +53,7 @@ steps:
     type: pending-approval
     title: Image push to Registry?
     timeout:
-      duration: 2
+      duration: 1
       finalState: denied      
     
   push_to_my_registry:
