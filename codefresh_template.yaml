@@ -71,4 +71,4 @@ steps:
         - success
       - name: waitForInputBeforePushImage
         on:
-        - success
+        - approved
